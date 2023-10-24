@@ -2,7 +2,6 @@ pipeline{
   agent any 
   tools {
     maven "maven"
-    sonar "sonar"
   }  
   stages {
     stage('git clone'){
@@ -17,7 +16,7 @@ pipeline{
     }
     stage('CodeQuality'){
       steps{
-       
+        sh "mvn clean install"
         sh "mvn sonar:sonar -Dsonar.projectKey=mavenwebapp -Dsonar.host.url=http://35.183.9.222:9000 -Dsonar.login=971937ee857342c83e5fddf00f185190123a6e09"
       }
     }
