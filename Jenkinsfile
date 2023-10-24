@@ -16,7 +16,9 @@ pipeline{
     }
     stage('CodeQuality'){
       steps{
-        sh "mvn sonar:sonar"
+        mvn "verify"
+        export JAVA_HOME="/path/to/java-17"
+        mvn "sonar:sonar"
       }
     }
     /*stage('5uploadNexus'){
