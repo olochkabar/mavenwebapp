@@ -14,11 +14,9 @@ pipeline{
         sh "mvn clean package"
       }
     }
-    stage('CodeQuality'){
+    stage('docker build'){
       steps{
-        mvn "verify"
-        export JAVA_HOME="/path/to/java-17"
-        mvn "sonar:sonar"
+        sh "docker build -t teslar:1 ."
       }
     }
     /*stage('5uploadNexus'){
