@@ -1,30 +1,26 @@
 pipeline{
   agent any 
   tools {
-    maven "maven3.6.0"
+    maven "maven"
   }  
   stages {
-    stage('1GetCode'){
+    stage('git clone'){
       steps{
-        sh "echo 'cloning the latest application version' "
-        git branch: 'feature', credentialsId: 'gitHubCredentials', url: 'https://github.com/LandmakTechnology/maven-web-application'
+         git 'https://github.com/olochkabar/mavenwebapp'
       }
     }
-    stage('3Test+Build'){
+    stage('Build'){
       steps{
-        sh "echo 'running JUnit-test-cases' "
-        sh "echo 'testing must passed to create artifacts ' "
         sh "mvn clean package"
       }
     }
-    /*
-    stage('4CodeQuality'){
+    stage('CodeQuality'){
       steps{
-        sh "echo 'Perfoming CodeQualityAnalysis' "
-        sh "mvn sonar:sonar"
+       
+        sh "mvn sonar:sonar -Dsonar.projectKey=mavenwebapp -Dsonar.host.url=http://35.183.9.222:9000 -Dsonar.login=971937ee857342c83e5fddf00f185190123a6e09"
       }
     }
-    stage('5uploadNexus'){
+    /*stage('5uploadNexus'){
       steps{
         sh "mvn deploy"
       }
