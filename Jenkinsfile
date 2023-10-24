@@ -16,7 +16,11 @@ pipeline{
     }
     stage('docker build'){
       steps{
-        sh "docker build -t teslar:1 ."
+        script {
+          withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
+            sh "docker build -t teslar:1 ."
+          }
+        }
       }
     }
     /*stage('5uploadNexus'){
