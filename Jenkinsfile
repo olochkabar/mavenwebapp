@@ -14,24 +14,27 @@ pipeline{
         sh "mvn clean package"
       }
     }
-    stage('docker build'){
+    stage('code quality'){
       steps{
         script {
-          withSonarQubeEnv(credentialsId: 'newsonar') {
-            sh "mvn sonar:sonar"
+          withSonarQubeEnv() {
+              sh "mvn clean verify sonar:sonar -Dsonar.projectKey=mavenwebapp -Dsonar.projectName='mavenwebapp'"
           }
         }
       }
     }
-    /*stage('docker build'){
+    stage('docker build and psuh'){
       steps{
         script {
           withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
-            sh "docker build -t teslar:1 ."
+            sh "docker build -t olochkabar/mavenwebapp:1 ."
+            sh "docker push olochkabar/mavenwebapp:1"
           }
         }
       }
     }
+  }
+}
     stage('5uploadNexus'){
       steps{
        withSonarQubeEnv(credentialsId: 'newsonar') {
