@@ -17,15 +17,26 @@ pipeline{
     stage('docker build'){
       steps{
         script {
+          withSonarQubeEnv(credentialsId: 'newsonar') {
+            sh "mvn sonar:sonar"
+          }
+        }
+      }
+    }
+    /*stage('docker build'){
+      steps{
+        script {
           withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
             sh "docker build -t teslar:1 ."
           }
         }
       }
     }
-    /*stage('5uploadNexus'){
+    stage('5uploadNexus'){
       steps{
-        sh "mvn deploy"
+       withSonarQubeEnv(credentialsId: 'newsonar') {
+    // some block
+}
       }
     } 
     stage('8deploy2prod'){
